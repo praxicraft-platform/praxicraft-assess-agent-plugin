@@ -1,0 +1,28 @@
+{
+  "name": "praxicraft-assess",
+  "version": "0.1.0",
+  "description": "Praxicraft Assess tools for Claude Code: hiring skills plus API and docs MCP servers.",
+  "author": {
+    "name": "Praxicraft",
+    "email": "support@praxicraft.com"
+  },
+  "homepage": "https://docs.praxicraft.com/build-with-agents",
+  "repository": "https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin",
+  "license": "MIT",
+  "keywords": [
+    "praxicraft",
+    "assess",
+    "hiring",
+    "claude-code",
+    "mcp",
+    "skills"
+  ],
+  "userConfig": {
+    "praxicraft_api_key": {
+      "type": "string",
+      "title": "Praxicraft Assess API Key",
+      "description": "Optional. Only required if you switch the API MCP server to local stdio (`npx -y @praxicraft/assess-mcp`). The default remote server authenticates via browser OAuth.",
+      "sensitive": true
+    }
+  }
+}

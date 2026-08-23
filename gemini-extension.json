@@ -1,0 +1,13 @@
+{
+  "name": "praxicraft-assess",
+  "version": "0.1.0",
+  "description": "Praxicraft Assess MCP servers: live API access and documentation search. Gemini CLI has no agent-skill primitive, so the skills in this plugin are not available here.",
+  "mcpServers": {
+    "praxicraft-assess-api": {
+      "httpUrl": "https://assess.praxicraft.com/mcp"
+    },
+    "praxicraft-assess-knowledge": {
+      "httpUrl": "https://docs.praxicraft.com/mcp"
+    }
+  }
+}

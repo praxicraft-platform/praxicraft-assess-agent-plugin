@@ -1,0 +1,20 @@
+{
+  "name": "praxicraft-assess",
+  "version": "0.1.0",
+  "description": "Praxicraft Assess tools for Codex: hiring skills + API/docs MCP servers.",
+  "author": {
+    "name": "Praxicraft",
+    "email": "support@praxicraft.com"
+  },
+  "homepage": "https://docs.praxicraft.com/build-with-agents",
+  "repository": "https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin",
+  "license": "MIT",
+  "keywords": [
+    "praxicraft",
+    "assess",
+    "hiring",
+    "codex",
+    "mcp",
+    "skills"
+  ]
+}

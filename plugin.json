@@ -1,0 +1,44 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "praxicraft-assess",
+  "version": "0.1.0",
+  "description": "Praxicraft Assess tools for AI coding agents: hiring integration skills plus the Assess API MCP and docs Knowledge MCP servers.",
+  "author": {
+    "name": "Praxicraft",
+    "email": "support@praxicraft.com"
+  },
+  "homepage": "https://docs.praxicraft.com/build-with-agents",
+  "repository": "https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin",
+  "license": "MIT",
+  "keywords": [
+    "praxicraft",
+    "assess",
+    "hiring",
+    "ats",
+    "webhooks",
+    "mcp",
+    "skills"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "composerIcon": "./assets/icon.svg",
+        "displayName": "Praxicraft Assess",
+        "shortDescription": "Assessments, invites, webhooks, and ATS automations in Codex.",
+        "longDescription": "Official Praxicraft Assess plugin. Bundles integration skills (best practices, Live/Test mode, webhooks/HMAC, invites + external_id, ATS invite loops, pipelines, SDK verify, MCP scopes) plus two MCP servers: live Assess API and documentation search.",
+        "developerName": "Praxicraft",
+        "category": "Developer Tools",
+        "defaultPrompt": [
+          "Verify Assess webhook signatures with X-Praxicraft-Signature and whsec_.",
+          "Invite a candidate with external_id so score-back can join the ATS record.",
+          "Wire Greenhouse stage change → Assess invite → note on candidate.passed."
+        ]
+      }
+    },
+    "dev.kiro": {
+      "displayName": "Praxicraft Assess",
+      "category": "Developer Tools",
+      "description": "Assess hiring skills plus API and documentation MCP servers."
+    }
+  }
+}

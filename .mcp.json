@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "praxicraft-assess-api": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://assess.praxicraft.com/mcp"
+      ],
+      "enabled": true
+    },
+    "praxicraft-assess-knowledge": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://docs.praxicraft.com/mcp"
+      ],
+      "enabled": true
+    }
+  }
+}
