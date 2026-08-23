@@ -1,16 +1,42 @@
 # Praxicraft Assess Agent Plugin
 
-Official [Agent Plugins 1.0](https://agent-plugins.org/specification) bundle for Praxicraft Assess.
+Official [Agent Plugins 1.0](https://agent-plugins.org/specification) bundle for **[Praxicraft Assess](https://assess.praxicraft.com)**.
 
-Installs **eight integration skills** and **two MCP servers** for Claude Code, Codex CLI, Cursor, VS Code / GitHub Copilot, Kiro, Gemini CLI (MCP only), and other MCP-compatible clients.
+One install wires **two MCP servers** and **eight hiring skills** into Claude Code, Codex CLI, Cursor, VS Code / GitHub Copilot, Kiro, OpenCode, and Gemini CLI (MCP only) — so agents can call the Assess API and follow correct invite, webhook, and ATS patterns.
+
+```bash
+claude plugins marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
+claude plugins install praxicraft-assess@praxicraft
+```
+
+Product docs: [Build with agents](https://docs.praxicraft.com/build-with-agents) · [MCP](https://docs.praxicraft.com/assess-mcp) · [Using docs with LLMs](https://docs.praxicraft.com/using-llms)
+
+## Table of Contents
+
+- [What you get](#what-you-get)
+- [Install](#install)
+  - [Claude Code](#claude-code)
+  - [Codex CLI](#codex-cli)
+  - [Cursor](#cursor)
+  - [VS Code / GitHub Copilot](#vs-code--github-copilot)
+  - [Gemini CLI](#gemini-cli-mcp-only)
+  - [Skills only](#skills-only)
+  - [MCP only (manual)](#mcp-only-manual)
+- [Try this prompt](#try-this-prompt)
+- [Authentication](#authentication)
+- [Live vs Test mode](#live-vs-test-mode)
+- [Requirements & support](#requirements--support)
+- [License](#license)
+
+---
 
 ## What you get
 
 | Primitive | Purpose | Auth |
 |-----------|---------|------|
 | **`praxicraft-assess-api`** | Live Public API tools (invites, results, webhooks, pipelines, …) | Browser OAuth at `https://assess.praxicraft.com/mcp` |
-| **`praxicraft-assess-knowledge`** | Search / read Assess docs | None — `https://docs.praxicraft.com/mcp` |
-| **Skills** | Procedural cheat sheets agents load on demand | — |
+| **`praxicraft-assess-knowledge`** | Search and read Assess documentation | None — `https://docs.praxicraft.com/mcp` |
+| **Skills** | Procedural cheat sheets your agent loads on demand | — |
 
 ### Skills
 
@@ -25,6 +51,10 @@ Installs **eight integration skills** and **two MCP servers** for Claude Code, C
 | `sdk-webhooks-verify` | Official SDK verify helpers |
 | `mcp-scopes` | Hosted vs stdio MCP, IP allowlists |
 
+Knowledge MCP cannot invite candidates. API MCP does not replace reading docs for payload shapes — use both.
+
+---
+
 ## Install
 
 ### Claude Code
@@ -34,13 +64,21 @@ claude plugins marketplace add praxicraft-platform/praxicraft-assess-agent-plugi
 claude plugins install praxicraft-assess@praxicraft
 ```
 
+The API MCP server uses browser OAuth by default — no keys required at install time. The first time your agent calls an Assess tool, you will be prompted to sign in.
+
 ### Codex CLI
 
 ```bash
 codex plugin marketplace add praxicraft-platform/praxicraft-assess-agent-plugin
 ```
 
-Then in the TUI: `/plugins` → install **praxicraft-assess**. Or point the marketplace at this local directory.
+Then open Codex and run `/plugins` → **Praxicraft** marketplace → install **praxicraft-assess**.
+
+Refresh if needed:
+
+```bash
+codex plugin marketplace upgrade praxicraft
+```
 
 ### Cursor
 
@@ -49,22 +87,24 @@ git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.
   ~/.cursor/plugins/local/praxicraft-assess-agent-plugin
 ```
 
-Or symlink this Desktop folder:
+Restart Cursor. Skills load from `skills/`; MCP servers from `.mcp.json`.
 
-```bash
-ln -s ~/Desktop/praxicraft-assess-agent-plugin ~/.cursor/plugins/local/praxicraft-assess-agent-plugin
-```
+### VS Code / GitHub Copilot
 
-Restart Cursor. Skills load from `skills/`; MCP from `.mcp.json` (via `.cursor-plugin/plugin.json`).
+Clone this repository, then in Chat → **Plugins** add the folder (or set `chat.pluginLocations`). Skills load from `skills/`; MCP from `.mcp.json`.
 
 ### Gemini CLI (MCP only)
+
+Gemini has no agent-skill primitive — you get the two MCP servers only:
 
 ```bash
 git clone https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin.git \
   ~/.gemini/extensions/praxicraft-assess
 ```
 
-### Skills only (no plugin)
+Restart Gemini CLI.
+
+### Skills only
 
 ```bash
 npx skills add https://docs.praxicraft.com
@@ -86,7 +126,7 @@ npx skills add praxicraft-platform/praxicraft-assess-agent-plugin
 }
 ```
 
-Stdio API (test keys / CI):
+Stdio API (Test mode / CI) via [`@praxicraft/assess-mcp`](https://github.com/praxicraft-platform/praxicraft-assess-mcp):
 
 ```json
 {
@@ -94,11 +134,15 @@ Stdio API (test keys / CI):
     "praxicraft-assess-api": {
       "command": "npx",
       "args": ["-y", "@praxicraft/assess-mcp"],
-      "env": { "PRAXICRAFT_API_KEY": "ct_test_xxxxxxxxxxxxxxxx" }
+      "env": {
+        "PRAXICRAFT_API_KEY": "ct_test_xxxxxxxxxxxxxxxx"
+      }
     }
   }
 }
 ```
+
+---
 
 ## Try this prompt
 
@@ -106,34 +150,45 @@ Stdio API (test keys / CI):
 Invite a Greenhouse candidate to our active Assess assessment with external_id set to their Candidate ID, then add a webhook handler that verifies X-Praxicraft-Signature and posts a note on candidate.passed.
 ```
 
-## Layout
+Your agent should load the invite / webhook skills, use Knowledge MCP for current field names, and call the API MCP (or write SDK code) accordingly.
 
-```
-plugin.json          # Agent Plugins 1.0 manifest
-mcp.json             # Native streamable-http MCP (Codex, Kiro, …)
-.mcp.json            # mcp-remote bridge (Cursor / Claude Code compat)
-skills/*/SKILL.md
-.claude-plugin/      # Claude marketplace + plugin
-.cursor-plugin/      # Cursor skills + MCP paths
-.codex-plugin/
-gemini-extension.json
-```
+---
 
-## Related packages
+## Authentication
 
-| Package | Role |
-|---------|------|
-| [`@praxicraft/assess-mcp`](https://github.com/praxicraft-platform/praxicraft-assess-mcp) | Stdio + hosted Assess **API** MCP (npm; Harbor image still via web monorepo deploy) |
-| Docs site | Knowledge MCP + Mintlify skills at https://docs.praxicraft.com |
-| Docs guide | https://docs.praxicraft.com/build-with-agents |
+- **Hosted API MCP** — browser OAuth; owners, admins, and [developers](https://docs.praxicraft.com/roles) can consent. Always **live** mode.
+- **Knowledge MCP** — no credentials.
+- **Stdio API MCP** — `PRAXICRAFT_API_KEY` from **Assess → Developer → API Keys**.
 
-## Security
+Never commit `ct_live_`, `ct_test_`, or `whsec_` secrets. Prefer OAuth in IDEs; use `ct_test_` keys while developing automations.
 
-- Prefer hosted OAuth over pasting live keys into agent config.
-- Use `ct_test_` keys while developing.
-- Never commit `ct_live_`, `ct_test_`, or `whsec_` secrets.
-- Review agent-generated webhook handlers for raw-body HMAC verification.
+Scopes: [Authentication](https://docs.praxicraft.com/authentication) · [Scopes](https://docs.praxicraft.com/scopes)
+
+---
+
+## Live vs Test mode
+
+| | Live | Test |
+|--|------|------|
+| Hosted OAuth | Yes (only mode) | Use stdio + `ct_test_` |
+| Webhook destinations | Live only | Test only |
+
+Details: [Live and Test mode](https://docs.praxicraft.com/authentication#live-and-test-mode)
+
+---
+
+## Requirements & support
+
+- An Assess organisation with API / MCP access (see [plan limits](https://docs.praxicraft.com/plan-limits))
+- Product docs: [docs.praxicraft.com](https://docs.praxicraft.com)
+- API MCP package: [@praxicraft/assess-mcp](https://github.com/praxicraft-platform/praxicraft-assess-mcp)
+- Issues: [GitHub Issues](https://github.com/praxicraft-platform/praxicraft-assess-agent-plugin/issues)
+- Email: [support@praxicraft.com](mailto:support@praxicraft.com)
+
+Review agent-generated webhook handlers for **raw-body** HMAC verification (`X-Praxicraft-Signature`).
+
+---
 
 ## License
 
-MIT
+[MIT](LICENSE)
