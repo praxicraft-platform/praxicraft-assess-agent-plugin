@@ -55,7 +55,7 @@ Use a dedicated key with least-privilege scopes. If other keys use CIDR allowlis
 
 ## What agents can do (API)
 
-Tools map to the Public API: assessments, invites, results, org/squads/audit (Starter+), cases, webhooks, interviews, pipelines, integrations.
+Tools map to the Public API: assessments, invites, results, org/squads/audit (Starter+), tasks, webhooks, interviews, pipelines, integrations.
 
 Remind agents to respect plan limits and branch on `error.code`.
 

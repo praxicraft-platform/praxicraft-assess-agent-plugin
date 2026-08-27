@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "praxicraft-assess",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Praxicraft Assess tools for AI coding agents: hiring integration skills plus the Assess API MCP and docs Knowledge MCP servers.",
   "author": {
     "name": "Praxicraft",
@@ -31,7 +31,7 @@
         "defaultPrompt": [
           "Verify Assess webhook signatures with X-Praxicraft-Signature and whsec_.",
           "Invite a candidate with external_id so score-back can join the ATS record.",
-          "Wire Greenhouse stage change → Assess invite → note on candidate.passed."
+          "Wire Greenhouse stage change \u2192 Assess invite \u2192 note on candidate.passed."
         ]
       }
     },
